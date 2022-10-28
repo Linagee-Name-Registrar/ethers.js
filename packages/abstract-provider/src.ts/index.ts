@@ -280,6 +280,10 @@ export abstract class Provider implements OnceBlockable {
     abstract resolveName(name: string | Promise<string>): Promise<null | string>;
     abstract lookupAddress(address: string | Promise<string>): Promise<null | string>;
 
+    // LNR
+    abstract resolveLNRName(name: string | Promise<string>): Promise<null | string>;
+    abstract lookupLNRAddress(address: string | Promise<string>): Promise<null | string>;
+
     // Event Emitter (ish)
     abstract on(eventName: EventType, listener: Listener): Provider;
     abstract once(eventName: EventType, listener: Listener): Provider;

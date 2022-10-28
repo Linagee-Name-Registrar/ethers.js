@@ -219,6 +219,33 @@ export interface EnsProvider {
     getResolver(name: string): Promise<null | EnsResolver>;
 }
 
+export interface LnrResolver {
+
+    // Name this Resolver is associated with
+    readonly name: string;
+
+    // The address of the resolver
+    readonly address: string;
+
+    // Multichain address resolution (also normal address resolution)
+    // See: https://eips.ethereum.org/EIPS/eip-2304
+    getLNRAddress(coinType?: 60): Promise<null | string>
+
+    // Contenthash field
+    // See: https://eips.ethereum.org/EIPS/eip-1577
+    getLNRContentHash(): Promise<null | string>;
+
+    // Storage of text records
+    // See: https://eips.ethereum.org/EIPS/eip-634
+    getLNRText(key: string): Promise<null | string>;
+};
+
+export interface LnrProvider {
+    resolveLNRName(name: string): Promise<null | string>;
+    lookupLNRAddress(address: string): Promise<null | string>;
+    getLNRResolver(name: string): Promise<null | LnrResolver>;
+}
+
 type CoinInfo = {
     symbol: string,
     ilk?: string,     // General family
@@ -332,7 +359,7 @@ function encodeBytes(datas: Array<BytesLike>) {
     return hexConcat(result);
 }
 
-export class Resolver implements EnsResolver {
+export class Resolver implements EnsResolver, LnrResolver {
     readonly provider: BaseProvider;
 
     readonly name: string;
@@ -699,7 +726,7 @@ let defaultFormatter: Formatter = null;
 
 let nextPollId = 1;
 
-export class BaseProvider extends Provider implements EnsProvider {
+export class BaseProvider extends Provider implements EnsProvider, LnrProvider {
     _networkPromise: Promise<Network>;
     _network: Network;
 

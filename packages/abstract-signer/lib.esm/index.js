@@ -93,6 +93,13 @@ export class Signer {
             return yield this.provider.resolveName(name);
         });
     }
+
+    resolveLNRName(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this._checkProvider("resolve");
+            return yield this.provider.resolve(name);
+        });
+    }
     // Checks a transaction does not contain invalid keys and if
     // no "from" is provided, populates it.
     // - does NOT require a provider
@@ -143,7 +150,7 @@ export class Signer {
                     }
                     const address = yield this.resolveName(to);
                     if (address == null) {
-                        logger.throwArgumentError("provided ENS name resolves to null", "tx.to", to);
+                        logger.throwArgumentError("provided ENS or LNR name resolves to null", "tx.to", to);
                     }
                     return address;
                 }));

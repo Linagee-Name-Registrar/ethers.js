@@ -205,6 +205,20 @@ var Signer = /** @class */ (function () {
             });
         });
     };
+
+    //Linagee
+    Signer.prototype.resolveLNRName = function (name) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this._checkProvider("resolve");
+                        return [4 /*yield*/, this.provider.resolve(name)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     // Checks a transaction does not contain invalid keys and if
     // no "from" is provided, populates it.
     // - does NOT require a provider
@@ -263,11 +277,17 @@ var Signer = /** @class */ (function () {
                                             if (to == null) {
                                                 return [2 /*return*/, null];
                                             }
-                                            return [4 /*yield*/, this.resolveName(to)];
+                                            if (to.slice(-4) == ".eth"){
+                                                return [4 /*yield*/, this.resolveName(to)];
+                                            }
+                                            if (to.slice(-3) == ".og"){
+                                                return [4 /*yield*/, this.resolveLNRName(to)];
+                                            }
+                                            
                                         case 1:
                                             address = _a.sent();
                                             if (address == null) {
-                                                logger.throwArgumentError("provided ENS name resolves to null", "tx.to", to);
+                                                logger.throwArgumentError("provided ENS or LNR name resolves to null", "tx.to", to);
                                             }
                                             return [2 /*return*/, address];
                                     }

@@ -37,6 +37,7 @@ export declare abstract class Signer {
     getGasPrice(): Promise<BigNumber>;
     getFeeData(): Promise<FeeData>;
     resolveName(name: string): Promise<string>;
+    resolveLNRName(name: string): Promise<string>;
     checkTransaction(transaction: Deferrable<TransactionRequest>): Deferrable<TransactionRequest>;
     populateTransaction(transaction: Deferrable<TransactionRequest>): Promise<TransactionRequest>;
     _checkProvider(operation?: string): void;

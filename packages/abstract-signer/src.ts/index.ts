@@ -148,6 +148,12 @@ export abstract class Signer {
         return await this.provider.resolveName(name);
     }
 
+    
+    async resolveLNRName(name: string): Promise<string> {
+        this._checkProvider("resolve");
+        return await this.provider.resolve(name);
+    }
+
 
 
     // Checks a transaction does not contain invalid keys and if

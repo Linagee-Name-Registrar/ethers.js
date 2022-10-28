@@ -30,6 +30,19 @@ export interface EnsProvider {
     lookupAddress(address: string): Promise<null | string>;
     getResolver(name: string): Promise<null | EnsResolver>;
 }
+
+export interface LnrResolver {
+    readonly name: string;
+    readonly address: string;
+    getLNRAddress(coinType?: 60): Promise<null | string>;
+    getLNRContentHash(): Promise<null | string>;
+    getLNRText(key: string): Promise<null | string>;
+}
+export interface LnrProvider {
+    resolveLNRName(name: string): Promise<null | string>;
+    lookupLNRAddress(address: string): Promise<null | string>;
+    getLNRResolver(name: string): Promise<null | LnrResolver>;
+}
 export interface Avatar {
     url: string;
     linkage: Array<{
@@ -37,7 +50,7 @@ export interface Avatar {
         content: string;
     }>;
 }
-export declare class Resolver implements EnsResolver {
+export declare class Resolver implements EnsResolver, LnrResolver {
     readonly provider: BaseProvider;
     readonly name: string;
     readonly address: string;
@@ -48,7 +61,9 @@ export declare class Resolver implements EnsResolver {
     _fetch(selector: string, parameters?: string): Promise<null | string>;
     _fetchBytes(selector: string, parameters?: string): Promise<null | string>;
     _getAddress(coinType: number, hexBytes: string): string;
-    getAddress(coinType?: number): Promise<string>;
+    getLAddress(coinType?: number): Promise<string>;
+    _getLNRAddress(coinType: number, hexBytes: string): string;
+    getLNRAddress(coinType?: number): Promise<string>;
     getAvatar(): Promise<null | Avatar>;
     getContentHash(): Promise<string>;
     getText(key: string): Promise<string>;
